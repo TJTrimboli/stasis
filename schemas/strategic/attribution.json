@@ -1,0 +1,399 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/strategic/attribution.json",
+    "title": "UTAMF Attribution",
+    "description": "Attribution details and confidence assessment",
+    "type": "object",
+    "properties": {
+        "attribution_confidence": {
+            "$ref": "../common/confidence.json"
+        },
+        "attribution_details": {
+            "type": "object",
+            "properties": {
+                "primary_attribution": {
+                    "type": "object",
+                    "properties": {
+                        "attributed_to": {
+                            "type": "string"
+                        },
+                        "attribution_type": {
+                            "type": "string",
+                            "enum": [
+                                "State Actor",
+                                "State Sponsored",
+                                "Criminal Organization",
+                                "Hacktivist Group",
+                                "Individual",
+                                "Other"
+                            ]
+                        },
+                        "confidence_factors": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "factor": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Technical Evidence",
+                                            "Operational Patterns",
+                                            "Infrastructure",
+                                            "Targeting",
+                                            "Cultural Indicators",
+                                            "Intelligence Sources",
+                                            "Other"
+                                        ]
+                                    },
+                                    "weight": {
+                                        "type": "string",
+                                        "enum": ["Low", "Medium", "High"]
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["factor", "weight"]
+                            }
+                        }
+                    },
+                    "required": ["attributed_to", "attribution_type"]
+                },
+                "alternative_attributions": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "attributed_to": {
+                                "type": "string"
+                            },
+                            "attribution_type": {
+                                "type": "string",
+                                "enum": [
+                                    "State Actor",
+                                    "State Sponsored",
+                                    "Criminal Organization",
+                                    "Hacktivist Group",
+                                    "Individual",
+                                    "Other"
+                                ]
+                            },
+                            "confidence": {
+                                "$ref": "../common/confidence.json"
+                            },
+                            "supporting_evidence": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "required": ["attributed_to", "attribution_type"]
+                    }
+                }
+            },
+            "required": ["primary_attribution"]
+        },
+        "evidence": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "evidence_id": {
+                        "type": "string",
+                        "pattern": "^EV[0-9]{6}$"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "Technical",
+                            "Operational",
+                            "Intelligence",
+                            "Open Source",
+                            "Human Intelligence",
+                            "Other"
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "source": {
+                        "type": "string"
+                    },
+                    "date_collected": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "confidence": {
+                        "$ref": "../common/confidence.json"
+                    },
+                    "corroborating_evidence": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^EV[0-9]{6}$"
+                        }
+                    },
+                    "analysis_notes": {
+                        "type": "string"
+                    }
+                },
+                "required": ["evidence_id", "type", "description"]
+            }
+        },
+        "attribution_history": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "date": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "previous_attribution": {
+                        "type": "string"
+                    },
+                    "new_attribution": {
+                        "type": "string"
+                    },
+                    "reason_for_change": {
+                        "type": "string"
+                    },
+                    "supporting_evidence": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^EV[0-9]{6}$"
+                        }
+                    }
+                },
+                "required": ["date", "new_attribution"]
+            }
+        },
+        "false_flags": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "impersonated_actor": {
+                        "type": "string"
+                    },
+                    "first_observed": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "last_observed": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "techniques_used": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "effectiveness": {
+                        "type": "string",
+                        "enum": ["Low", "Medium", "High"]
+                    },
+                    "indicators": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Language",
+                                        "TTPs",
+                                        "Infrastructure",
+                                        "Timing",
+                                        "Other"
+                                    ]
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "confidence": {
+                                    "$ref": "../common/confidence.json"
+                                }
+                            },
+                            "required": ["type", "description"]
+                        }
+                    },
+                    "analysis": {
+                        "type": "string",
+                        "description": "Analysis of false flag operation"
+                    }
+                },
+                "required": ["impersonated_actor", "first_observed"]
+            }
+        },
+        "attribution_challenges": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "challenge_type": {
+                        "type": "string",
+                        "enum": [
+                            "Technical",
+                            "Operational",
+                            "Intelligence",
+                            "Political",
+                            "Resource",
+                            "Other"
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "impact": {
+                        "type": "string",
+                        "enum": ["Low", "Medium", "High"]
+                    },
+                    "mitigation_strategy": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["Active", "Mitigated", "Resolved"]
+                    }
+                },
+                "required": ["challenge_type", "description", "impact"]
+            }
+        },
+        "confidence_assessment": {
+            "type": "object",
+            "properties": {
+                "overall_confidence": {
+                    "$ref": "../common/confidence.json"
+                },
+                "technical_confidence": {
+                    "$ref": "../common/confidence.json"
+                },
+                "operational_confidence": {
+                    "$ref": "../common/confidence.json"
+                },
+                "intelligence_confidence": {
+                    "$ref": "../common/confidence.json"
+                },
+                "assessment_factors": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "factor": {
+                                "type": "string"
+                            },
+                            "weight": {
+                                "type": "string",
+                                "enum": ["Low", "Medium", "High"]
+                            },
+                            "contribution": {
+                                "type": "string",
+                                "enum": ["Positive", "Negative", "Neutral"]
+                            },
+                            "notes": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["factor", "weight", "contribution"]
+                    }
+                },
+                "confidence_timeline": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "date": {
+                                "$ref": "../common/timestamp.json"
+                            },
+                            "confidence_level": {
+                                "$ref": "../common/confidence.json"
+                            },
+                            "change_reason": {
+                                "type": "string"
+                            },
+                            "supporting_evidence": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "pattern": "^EV[0-9]{6}$"
+                                }
+                            }
+                        },
+                        "required": ["date", "confidence_level"]
+                    }
+                }
+            },
+            "required": ["overall_confidence"]
+        },
+        "attribution_methodology": {
+            "type": "object",
+            "properties": {
+                "analysis_methods": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "method": {
+                                "type": "string",
+                                "enum": [
+                                    "Technical Analysis",
+                                    "Pattern Analysis",
+                                    "Intelligence Analysis",
+                                    "Behavioral Analysis",
+                                    "Infrastructure Analysis",
+                                    "Other"
+                                ]
+                            },
+                            "description": {
+                                "type": "string"
+                            },
+                            "effectiveness": {
+                                "type": "string",
+                                "enum": ["Low", "Medium", "High"]
+                            },
+                            "limitations": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "required": ["method", "description"]
+                    }
+                },
+                "validation_process": {
+                    "type": "object",
+                    "properties": {
+                        "steps": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "reviewers": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "review_date": {
+                            "$ref": "../common/timestamp.json"
+                        },
+                        "next_review": {
+                            "$ref": "../common/timestamp.json"
+                        }
+                    },
+                    "required": ["steps", "review_date"]
+                }
+            },
+            "required": ["analysis_methods"]
+        }
+    },
+    "required": [
+        "attribution_confidence",
+        "attribution_details",
+        "evidence",
+        "confidence_assessment"
+    ],
+    "additionalProperties": false
+}

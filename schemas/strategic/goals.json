@@ -1,0 +1,364 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/strategic/goals.json",
+    "title": "UTAMF Strategic Goals",
+    "description": "Strategic goals and objectives of the threat actor",
+    "type": "object",
+    "properties": {
+        "mission_statement": {
+            "type": "string",
+            "description": "Overall mission or purpose"
+        },
+        "strategic_objectives": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "objective_id": {
+                        "type": "string",
+                        "pattern": "^SO[0-9]{6}$"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "Intelligence Collection",
+                            "Financial Gain",
+                            "Disruption",
+                            "Destruction",
+                            "Information Operations",
+                            "Technology Acquisition",
+                            "Military Advantage",
+                            "Political Influence",
+                            "Other"
+                        ]
+                    },
+                    "priority": {
+                        "type": "string",
+                        "enum": ["Critical", "High", "Medium", "Low"]
+                    },
+                    "timeline": {
+                        "type": "object",
+                        "properties": {
+                            "start_date": {
+                                "$ref": "../common/timestamp.json"
+                            },
+                            "target_date": {
+                                "$ref": "../common/timestamp.json"
+                            },
+                            "actual_completion": {
+                                "$ref": "../common/timestamp.json"
+                            }
+                        },
+                        "required": ["start_date"]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "Planned",
+                            "In Progress",
+                            "Completed",
+                            "Suspended",
+                            "Abandoned"
+                        ]
+                    },
+                    "success_criteria": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "dependencies": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^SO[0-9]{6}$"
+                        }
+                    }
+                },
+                "required": ["objective_id", "description", "category", "priority"]
+            }
+        },
+        "operational_goals": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "goal_id": {
+                        "type": "string",
+                        "pattern": "^OG[0-9]{6}$"
+                    },
+                    "parent_objective": {
+                        "type": "string",
+                        "pattern": "^SO[0-9]{6}$"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "target_types": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "required_capabilities": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "metrics": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "metric_name": {
+                                    "type": "string"
+                                },
+                                "target_value": {
+                                    "type": "string"
+                                },
+                                "current_value": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["metric_name", "target_value"]
+                        }
+                    },
+                    "timeline": {
+                        "type": "object",
+                        "properties": {
+                            "start_date": {
+                                "$ref": "../common/timestamp.json"
+                            },
+                            "milestones": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "date": {
+                                            "$ref": "../common/timestamp.json"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": ["Pending", "Completed", "Delayed", "Failed"]
+                                        }
+                                    },
+                                    "required": ["date", "description"]
+                                }
+                            },
+                            "completion_date": {
+                                "$ref": "../common/timestamp.json"
+                            }
+                        },
+                        "required": ["start_date"]
+                    }
+                },
+                "required": ["goal_id", "description"]
+            }
+        },
+        "target_outcomes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "outcome_id": {
+                        "type": "string",
+                        "pattern": "^TO[0-9]{6}$"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "impact_level": {
+                        "type": "string",
+                        "enum": ["Strategic", "Operational", "Tactical"]
+                    },
+                    "success_indicators": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "associated_goals": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^(SO|OG)[0-9]{6}$"
+                        }
+                    }
+                },
+                "required": ["outcome_id", "description", "impact_level"]
+            }
+        },
+        "goal_relationships": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "source_goal": {
+                        "type": "string",
+                        "pattern": "^(SO|OG)[0-9]{6}$"
+                    },
+                    "target_goal": {
+                        "type": "string",
+                        "pattern": "^(SO|OG)[0-9]{6}$"
+                    },
+                    "relationship_type": {
+                        "type": "string",
+                        "enum": [
+                            "Depends On",
+                            "Supports",
+                            "Conflicts With",
+                            "Enables",
+                            "Precedes"
+                        ]
+                    },
+                    "strength": {
+                        "type": "string",
+                        "enum": ["Weak", "Moderate", "Strong"]
+                    }
+                },
+                "required": ["source_goal", "target_goal", "relationship_type"]
+            }
+        },
+        "goal_tracking": {
+            "type": "object",
+            "properties": {
+                "review_frequency": {
+                    "type": "string",
+                    "enum": ["Weekly", "Monthly", "Quarterly", "Annually"]
+                },
+                "last_review": {
+                    "$ref": "../common/timestamp.json"
+                },
+                "next_review": {
+                    "$ref": "../common/timestamp.json"
+                },
+                "progress_metrics": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "metric_name": {
+                                "type": "string"
+                            },
+                            "current_value": {
+                                "type": "string"
+                            },
+                            "target_value": {
+                                "type": "string"
+                            },
+                            "trend": {
+                                "type": "string",
+                                "enum": ["Improving", "Stable", "Declining"]
+                            },
+                            "last_updated": {
+                                "$ref": "../common/timestamp.json"
+                            }
+                        },
+                        "required": ["metric_name", "current_value"]
+                    }
+                },
+                "adjustments": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "date": {
+                                "$ref": "../common/timestamp.json"
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": ["Priority Change", "Timeline Adjustment", "Scope Change", "Resource Allocation"]
+                            },
+                            "description": {
+                                "type": "string"
+                            },
+                            "reason": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["date", "type", "description"]
+                    }
+                }
+            }
+        },
+        "resource_requirements": {
+            "type": "object",
+            "properties": {
+                "personnel": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "role": {
+                                "type": "string"
+                            },
+                            "quantity": {
+                                "type": "integer",
+                                "minimum": 1
+                            },
+                            "skills": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "availability": {
+                                "type": "string",
+                                "enum": ["Available", "Partial", "Unavailable"]
+                            }
+                        },
+                        "required": ["role", "quantity"]
+                    }
+                },
+                "technical": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "resource_type": {
+                                "type": "string"
+                            },
+                            "status": {
+                                "type": "string",
+                                "enum": ["Available", "In Development", "Needed"]
+                            },
+                            "priority": {
+                                "type": "string",
+                                "enum": ["Critical", "High", "Medium", "Low"]
+                            }
+                        },
+                        "required": ["resource_type", "status"]
+                    }
+                },
+                "financial": {
+                    "type": "object",
+                    "properties": {
+                        "budget_allocation": {
+                            "type": "string"
+                        },
+                        "funding_sources": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "constraints": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "required": ["strategic_objectives"]
+}

@@ -1,0 +1,33 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/technical/capability.json",
+    "title": "UTAMF Technical Capability",
+    "description": "Technical capability assessment",
+    "type": "object",
+    "properties": {
+        "capability_level": {
+            "type": "string",
+            "enum": ["Basic", "Intermediate", "Advanced"],
+            "description": "Overall technical sophistication level"
+        },
+        "tools_malware": {
+            "$ref": "tools-malware.json"
+        },
+        "infrastructure": {
+            "$ref": "infrastructure.json"
+        },
+        "c2": {
+            "$ref": "c2.json"
+        },
+        "exploitation": {
+            "$ref": "exploitation.json"
+        },
+        "assessment_date": {
+            "$ref": "../common/timestamp.json"
+        },
+        "confidence": {
+            "$ref": "../common/confidence.json"
+        }
+    },
+    "required": ["capability_level"]
+}

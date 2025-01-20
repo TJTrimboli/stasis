@@ -1,0 +1,215 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/technical/c2.json",
+    "title": "UTAMF Command and Control",
+    "description": "Command and Control characteristics",
+    "type": "object",
+    "properties": {
+        "protocols": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "protocol": {
+                        "type": "string",
+                        "enum": [
+                            "HTTP",
+                            "HTTPS",
+                            "DNS",
+                            "TCP",
+                            "UDP",
+                            "ICMP",
+                            "SMB",
+                            "Custom",
+                            "Other"
+                        ]
+                    },
+                    "port": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535
+                    },
+                    "details": {
+                        "type": "string",
+                        "description": "Additional protocol details"
+                    }
+                },
+                "required": ["protocol"]
+            }
+        },
+        "encryption": {
+            "type": "object",
+            "properties": {
+                "used": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "Custom",
+                        "SSL/TLS",
+                        "RC4",
+                        "AES",
+                        "Other"
+                    ]
+                },
+                "details": {
+                    "type": "string",
+                    "description": "Encryption implementation details"
+                }
+            },
+            "required": ["used"]
+        },
+        "communication_patterns": {
+            "type": "object",
+            "properties": {
+                "frequency": {
+                    "type": "string",
+                    "enum": [
+                        "Continuous",
+                        "Periodic",
+                        "Random",
+                        "On-Demand"
+                    ]
+                },
+                "beaconing_interval": {
+                    "type": "string",
+                    "description": "Time between check-ins"
+                },
+                "jitter": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "description": "Percentage of randomization in timing"
+                },
+                "data_encoding": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Base64",
+                            "Hex",
+                            "Custom",
+                            "Plain",
+                            "XOR",
+                            "Other"
+                        ]
+                    }
+                }
+            }
+        },
+        "persistence": {
+            "type": "object",
+            "properties": {
+                "method": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Registry",
+                            "Scheduled Task",
+                            "Service",
+                            "Startup Folder",
+                            "DLL Hijacking",
+                            "Boot Script",
+                            "Other"
+                        ]
+                    }
+                },
+                "details": {
+                    "type": "string",
+                    "description": "Details about persistence implementation"
+                }
+            }
+        },
+        "evasion_techniques": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "technique": {
+                        "type": "string",
+                        "enum": [
+                            "Domain Generation",
+                            "Traffic Obfuscation",
+                            "Protocol Tunneling",
+                            "Legitimate Service Abuse",
+                            "Other"
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "effectiveness": {
+                        "type": "string",
+                        "enum": ["Low", "Medium", "High"]
+                    }
+                },
+                "required": ["technique"]
+            }
+        },
+        "fallback_mechanisms": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "Alternate C2",
+                            "Different Protocol",
+                            "Dormancy",
+                            "Self-Destruction",
+                            "Other"
+                        ]
+                    },
+                    "trigger": {
+                        "type": "string",
+                        "description": "What triggers the fallback mechanism"
+                    },
+                    "details": {
+                        "type": "string"
+                    }
+                },
+                "required": ["type"]
+            }
+        },
+        "data_exfiltration": {
+            "type": "object",
+            "properties": {
+                "methods": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "HTTP POST",
+                            "DNS Tunneling",
+                            "Custom Protocol",
+                            "File Transfer",
+                            "Email",
+                            "Cloud Service",
+                            "Other"
+                        ]
+                    }
+                },
+                "size_limits": {
+                    "type": "object",
+                    "properties": {
+                        "max_chunk_size": {
+                            "type": "integer",
+                            "description": "Maximum size of individual transfers in bytes"
+                        },
+                        "rate_limiting": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "staging": {
+                    "type": "boolean",
+                    "description": "Whether data is staged before exfiltration"
+                }
+            }
+        }
+    },
+    "required": ["protocols"]
+}

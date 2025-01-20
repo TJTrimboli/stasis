@@ -1,0 +1,444 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/strategic/relationships.json",
+    "title": "UTAMF Strategic Relationships",
+    "description": "Relationships with other threat actors and entities",
+    "type": "object",
+    "properties": {
+        "threat_actor_relationships": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "related_actor": {
+                        "$ref": "../common/identifier.json"
+                    },
+                    "relationship_type": {
+                        "type": "string",
+                        "enum": [
+                            "Parent Organization",
+                            "Subsidiary",
+                            "Collaborator",
+                            "Competitor",
+                            "Shares Resources",
+                            "Shares Infrastructure",
+                            "Provides Support",
+                            "Receives Support",
+                            "Other"
+                        ]
+                    },
+                    "first_observed": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "last_observed": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "strength": {
+                        "type": "string",
+                        "enum": ["Weak", "Moderate", "Strong"]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["Active", "Inactive", "Suspected", "Historical"]
+                    },
+                    "shared_resources": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "resource_type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Infrastructure",
+                                        "Tools",
+                                        "Personnel",
+                                        "Intelligence",
+                                        "Financial",
+                                        "Other"
+                                    ]
+                                },
+                                "details": {
+                                    "type": "string"
+                                },
+                                "sharing_pattern": {
+                                    "type": "string",
+                                    "enum": ["Regular", "Occasional", "One-time"]
+                                }
+                            },
+                            "required": ["resource_type"]
+                        }
+                    },
+                    "confidence": {
+                        "$ref": "../common/confidence.json"
+                    }
+                },
+                "required": ["related_actor", "relationship_type"]
+            }
+        },
+        "state_relationships": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "state": {
+                        "type": "string",
+                        "pattern": "^[A-Z]{3}$"
+                    },
+                    "relationship_type": {
+                        "type": "string",
+                        "enum": [
+                            "State Sponsored",
+                            "State Directed",
+                            "State Condoned",
+                            "Independent",
+                            "Unknown"
+                        ]
+                    },
+                    "evidence": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Technical",
+                                        "Financial",
+                                        "Operational",
+                                        "Intelligence",
+                                        "Other"
+                                    ]
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "source": {
+                                    "type": "string"
+                                },
+                                "date": {
+                                    "$ref": "../common/timestamp.json"
+                                }
+                            },
+                            "required": ["type", "description"]
+                        }
+                    },
+                    "confidence": {
+                        "$ref": "../common/confidence.json"
+                    }
+                },
+                "required": ["state", "relationship_type"]
+            }
+        },
+        "organizational_relationships": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "organization_name": {
+                        "type": "string"
+                    },
+                    "organization_type": {
+                        "type": "string",
+                        "enum": [
+                            "Military",
+                            "Intelligence Agency",
+                            "Criminal Organization",
+                            "Private Company",
+                            "Research Institution",
+                            "Other"
+                        ]
+                    },
+                    "relationship_type": {
+                        "type": "string",
+                        "enum": [
+                            "Parent",
+                            "Subsidiary",
+                            "Contractor",
+                            "Partner",
+                            "Front Organization",
+                            "Shell Company",
+                            "Other"
+                        ]
+                    },
+                    "start_date": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "end_date": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["Active", "Inactive", "Suspected"]
+                    },
+                    "details": {
+                        "type": "string",
+                        "description": "Additional relationship context"
+                    },
+                    "indicators": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Financial",
+                                        "Personnel",
+                                        "Infrastructure",
+                                        "Operational",
+                                        "Other"
+                                    ]
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "confidence": {
+                                    "$ref": "../common/confidence.json"
+                                }
+                            },
+                            "required": ["type", "description"]
+                        }
+                    }
+                },
+                "required": ["organization_name", "organization_type", "relationship_type"]
+            }
+        },
+        "relationship_changes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "date": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "change_type": {
+                        "type": "string",
+                        "enum": [
+                            "New Relationship",
+                            "Relationship Ended",
+                            "Relationship Changed",
+                            "Resource Sharing Changed",
+                            "Other"
+                        ]
+                    },
+                    "entities_involved": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "previous_state": {
+                        "type": "string"
+                    },
+                    "new_state": {
+                        "type": "string"
+                    },
+                    "reason": {
+                        "type": "string"
+                    },
+                    "impact": {
+                        "type": "string",
+                        "enum": ["Minor", "Moderate", "Significant"]
+                    }
+                },
+                "required": ["date", "change_type", "entities_involved"]
+            }
+        },
+        "relationship_patterns": {
+            "type": "object",
+            "properties": {
+                "collaboration_patterns": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "pattern_type": {
+                                "type": "string",
+                                "enum": [
+                                    "Resource Sharing",
+                                    "Operational Coordination",
+                                    "Intelligence Sharing",
+                                    "Technical Support",
+                                    "Other"
+                                ]
+                            },
+                            "frequency": {
+                                "type": "string",
+                                "enum": ["Regular", "Occasional", "Rare"]
+                            },
+                            "participants": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "pattern_details": {
+                                "type": "string"
+                            },
+                            "observed_times": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "../common/timestamp.json"
+                                }
+                            },
+                            "effectiveness": {
+                                "type": "string",
+                                "enum": ["Low", "Medium", "High"]
+                            }
+                        },
+                        "required": ["pattern_type", "participants"]
+                    }
+                },
+                "resource_dependencies": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "resource_type": {
+                                "type": "string",
+                                "enum": [
+                                    "Infrastructure",
+                                    "Tools",
+                                    "Intelligence",
+                                    "Financial",
+                                    "Personnel",
+                                    "Other"
+                                ]
+                            },
+                            "provider": {
+                                "type": "string"
+                            },
+                            "recipient": {
+                                "type": "string"
+                            },
+                            "dependency_level": {
+                                "type": "string",
+                                "enum": ["Critical", "Important", "Minor"]
+                            },
+                            "notes": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["resource_type", "provider", "recipient"]
+                    }
+                },
+                "operational_coordination": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "coordination_type": {
+                                "type": "string",
+                                "enum": [
+                                    "Joint Operations",
+                                    "Target Deconfliction",
+                                    "Resource Allocation",
+                                    "Intelligence Sharing",
+                                    "Other"
+                                ]
+                            },
+                            "participants": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "frequency": {
+                                "type": "string",
+                                "enum": ["Regular", "Occasional", "One-time"]
+                            },
+                            "effectiveness": {
+                                "type": "string",
+                                "enum": ["Low", "Medium", "High"]
+                            },
+                            "coordination_mechanism": {
+                                "type": "string",
+                                "description": "How coordination is achieved"
+                            }
+                        },
+                        "required": ["coordination_type", "participants"]
+                    }
+                }
+            }
+        },
+        "historical_context": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "time_period": {
+                        "type": "object",
+                        "properties": {
+                            "start": {
+                                "$ref": "../common/timestamp.json"
+                            },
+                            "end": {
+                                "$ref": "../common/timestamp.json"
+                            }
+                        },
+                        "required": ["start"]
+                    },
+                    "relationship_state": {
+                        "type": "string",
+                        "description": "Description of relationships during this period"
+                    },
+                    "significant_events": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "date": {
+                                    "$ref": "../common/timestamp.json"
+                                },
+                                "event": {
+                                    "type": "string"
+                                },
+                                "impact": {
+                                    "type": "string",
+                                    "enum": ["Low", "Medium", "High"]
+                                },
+                                "affected_relationships": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "outcome": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["date", "event"]
+                        }
+                    },
+                    "pattern_changes": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "change_type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Relationship Strength",
+                                        "Coordination Pattern",
+                                        "Resource Sharing",
+                                        "Operational Focus"
+                                    ]
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "trigger": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["change_type", "description"]
+                        }
+                    }
+                },
+                "required": ["time_period", "relationship_state"]
+            }
+        }
+    },
+    "required": ["threat_actor_relationships"],
+    "additionalProperties": false
+}

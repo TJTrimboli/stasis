@@ -1,0 +1,156 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/behavioral/geographic.json",
+    "title": "UTAMF Geographic Targeting",
+    "description": "Geographic targeting patterns and preferences",
+    "type": "object",
+    "properties": {
+        "regions": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "enum": [
+                            "North America",
+                            "South America",
+                            "Europe",
+                            "Middle East",
+                            "Africa",
+                            "Asia Pacific",
+                            "Central Asia",
+                            "Global"
+                        ]
+                    },
+                    "focus_level": {
+                        "type": "string",
+                        "enum": ["Primary", "Secondary", "Incidental"]
+                    },
+                    "first_activity": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "last_activity": {
+                        "$ref": "../common/timestamp.json"
+                    }
+                },
+                "required": ["name", "focus_level"]
+            }
+        },
+        "countries": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "country_code": {
+                        "type": "string",
+                        "pattern": "^[A-Z]{3}$",
+                        "description": "ISO 3166-1 alpha-3 country code"
+                    },
+                    "targeting_frequency": {
+                        "type": "string",
+                        "enum": ["Frequent", "Occasional", "Rare"]
+                    },
+                    "targeting_context": {
+                        "type": "string",
+                        "description": "Context for targeting this country"
+                    },
+                    "excluded_areas": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "Areas specifically avoided"
+                        }
+                    }
+                },
+                "required": ["country_code"]
+            }
+        },
+        "geographic_shifts": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "from_region": {
+                        "type": "string"
+                    },
+                    "to_region": {
+                        "type": "string"
+                    },
+                    "date": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "reason": {
+                        "type": "string",
+                        "description": "Reason for geographic targeting shift"
+                    },
+                    "confidence": {
+                        "$ref": "../common/confidence.json"
+                    }
+                },
+                "required": ["from_region", "to_region", "date"]
+            }
+        },
+        "infrastructure_locations": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "country_code": {
+                        "type": "string",
+                        "pattern": "^[A-Z]{3}$"
+                    },
+                    "purpose": {
+                        "type": "string",
+                        "enum": [
+                            "C2",
+                            "Staging",
+                            "Exfiltration",
+                            "Development",
+                            "Operations"
+                        ]
+                    },
+                    "first_observed": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "last_observed": {
+                        "$ref": "../common/timestamp.json"
+                    }
+                },
+                "required": ["country_code", "purpose"]
+            }
+        },
+        "geopolitical_factors": {
+            "type": "object",
+            "properties": {
+                "aligned_states": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^[A-Z]{3}$"
+                    }
+                },
+                "avoided_regions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "targeting_motivations": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Political",
+                            "Economic",
+                            "Military",
+                            "Intelligence",
+                            "Other"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "required": ["regions"]
+}

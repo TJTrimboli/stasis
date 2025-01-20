@@ -1,0 +1,174 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/metadata/references.json",
+    "title": "UTAMF References",
+    "description": "Reference metadata for UTAMF objects",
+    "type": "object",
+    "properties": {
+        "external_references": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "reference_id": {
+                        "type": "string",
+                        "pattern": "^REF[0-9]{6}$"
+                    },
+                    "source_name": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "Analysis",
+                            "Blog Post",
+                            "Research Paper",
+                            "Technical Report",
+                            "Threat Report",
+                            "News Article",
+                            "Intelligence Report",
+                            "Other"
+                        ]
+                    },
+                    "date_added": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "confidence": {
+                        "$ref": "../common/confidence.json"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": ["reference_id", "source_name"]
+            }
+        },
+        "internal_references": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "reference_id": {
+                        "type": "string",
+                        "pattern": "^IREF[0-9]{6}$"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "document_type": {
+                        "type": "string",
+                        "enum": [
+                            "Analysis Report",
+                            "Intelligence Assessment",
+                            "Technical Analysis",
+                            "Incident Report",
+                            "Other"
+                        ]
+                    },
+                    "classification": {
+                        "type": "string",
+                        "enum": [
+                            "Unclassified",
+                            "Confidential",
+                            "Secret",
+                            "Top Secret"
+                        ]
+                    },
+                    "date_created": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "author": {
+                        "type": "string"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "access_requirements": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": ["reference_id", "title", "classification"]
+            }
+        },
+        "related_indicators": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "indicator_id": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "IP",
+                            "Domain",
+                            "URL",
+                            "File Hash",
+                            "Email",
+                            "YARA Rule",
+                            "Other"
+                        ]
+                    },
+                    "value": {
+                        "type": "string"
+                    },
+                    "first_seen": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "last_seen": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "confidence": {
+                        "$ref": "../common/confidence.json"
+                    }
+                },
+                "required": ["indicator_id", "type", "value"]
+            }
+        },
+        "reference_notes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "note_id": {
+                        "type": "string",
+                        "pattern": "^NOTE[0-9]{6}$"
+                    },
+                    "content": {
+                        "type": "string"
+                    },
+                    "author": {
+                        "type": "string"
+                    },
+                    "date_added": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "references": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^(REF|IREF)[0-9]{6}$"
+                        }
+                    }
+                },
+                "required": ["note_id", "content"]
+            }
+        }
+    },
+    "required": ["external_references"],
+    "additionalProperties": false
+}
