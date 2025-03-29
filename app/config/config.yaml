@@ -1,0 +1,42 @@
+application:
+  name: STASIS
+  version: 1.0.0
+  environment: development
+
+database:
+  type: file  # Options: file, mongodb, postgresql
+  path: data/actors/
+  backup_path: data/backups/
+
+sources:
+  mitre:
+    enabled: true
+    url: https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json
+    update_interval: 86400  # 24 hours in seconds
+    confidence: 4
+
+  alienvault:
+    enabled: true
+    api_key: ${ALIENVAULT_API_KEY}
+    url: https://otx.alienvault.com/api/v1
+    update_interval: 43200  # 12 hours in seconds
+    confidence: 3
+
+  eternal_liberty:
+    enabled: true
+    url: https://raw.githubusercontent.com/StrangerealIntel/EternalLiberty/main/EternalLiberty.json
+    update_interval: 86400
+    confidence: 3
+    mapping:
+      name: name
+      country: geographic_targeting.primary_location
+      type: actor_type
+      operations: attack_patterns
+      tools: tools_malware
+      targets: target_sectors
+
+custom_sources:
+  enabled: true
+  path: sources/custom/
+  validation_required: true
+  update_interval: 86400
