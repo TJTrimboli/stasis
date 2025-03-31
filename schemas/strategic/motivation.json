@@ -1,0 +1,259 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/strategic/motivation.json",
+    "title": "UTAMF Strategic Motivation",
+    "description": "Strategic motivations and objectives of the threat actor",
+    "type": "object",
+    "properties": {
+        "primary_motivation": {
+            "type": "string",
+            "enum": [
+                "Cyber Espionage",
+                "Financial Gain",
+                "Hacktivism",
+                "Information Operations",
+                "Destructive Attack",
+                "Military Advantage",
+                "Technology Theft",
+                "Political Influence",
+                "Unknown"
+            ],
+            "description": "Primary driver of threat actor activities"
+        },
+        "secondary_motivations": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "Cyber Espionage",
+                    "Financial Gain",
+                    "Hacktivism",
+                    "Information Operations",
+                    "Destructive Attack",
+                    "Military Advantage",
+                    "Technology Theft",
+                    "Political Influence",
+                    "Unknown"
+                ]
+            }
+        },
+        "motivation_details": {
+            "type": "object",
+            "properties": {
+                "financial": {
+                    "type": "object",
+                    "properties": {
+                        "revenue_sources": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Ransomware",
+                                    "Banking Fraud",
+                                    "Cryptocurrency Theft",
+                                    "Data Sales",
+                                    "Access Sales",
+                                    "Other"
+                                ]
+                            }
+                        },
+                        "estimated_earnings": {
+                            "type": "string",
+                            "description": "Estimated financial gains range"
+                        },
+                        "cryptocurrency_wallets": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "political": {
+                    "type": "object",
+                    "properties": {
+                        "alignment": {
+                            "type": "string",
+                            "description": "Political alignment or ideology"
+                        },
+                        "objectives": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "target_policies": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "espionage": {
+                    "type": "object",
+                    "properties": {
+                        "collection_priorities": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "priority": {
+                                        "type": "string",
+                                        "enum": ["Critical", "High", "Medium", "Low"]
+                                    },
+                                    "target_data": {
+                                        "type": "string"
+                                    },
+                                    "justification": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["priority", "target_data"]
+                            }
+                        },
+                        "intelligence_requirements": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "military": {
+                    "type": "object",
+                    "properties": {
+                        "objectives": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Battlefield Advantage",
+                                    "Force Positioning",
+                                    "Capability Assessment",
+                                    "Strategic Planning",
+                                    "Command and Control Disruption",
+                                    "Other"
+                                ]
+                            }
+                        },
+                        "target_capabilities": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "operational_context": {
+                            "type": "string",
+                            "description": "Military context of cyber operations"
+                        }
+                    }
+                },
+                "ideological": {
+                    "type": "object",
+                    "properties": {
+                        "beliefs": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "stated_goals": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "associated_movements": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "motivation_changes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "date": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "previous_motivation": {
+                        "type": "string"
+                    },
+                    "new_motivation": {
+                        "type": "string"
+                    },
+                    "reason": {
+                        "type": "string"
+                    },
+                    "confidence": {
+                        "$ref": "../common/confidence.json"
+                    }
+                },
+                "required": ["date", "new_motivation"]
+            }
+        },
+        "strategic_goals": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "goal": {
+                        "type": "string"
+                    },
+                    "timeframe": {
+                        "type": "string",
+                        "enum": ["Short-term", "Medium-term", "Long-term"]
+                    },
+                    "progress": {
+                        "type": "string",
+                        "enum": ["Not Started", "In Progress", "Achieved", "Abandoned"]
+                    },
+                    "related_activities": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": ["goal", "timeframe"]
+            }
+        },
+        "resource_allocation": {
+            "type": "object",
+            "properties": {
+                "priority_operations": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "operation_type": {
+                                "type": "string"
+                            },
+                            "resource_level": {
+                                "type": "string",
+                                "enum": ["Minimal", "Moderate", "Significant", "Maximum"]
+                            },
+                            "success_criteria": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["operation_type", "resource_level"]
+                    }
+                },
+                "resource_constraints": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "required": ["primary_motivation"]
+}

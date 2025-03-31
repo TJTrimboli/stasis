@@ -1,0 +1,521 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "UTAMF Threat Actor Schema",
+	"version": "1.0.0",
+	"type": "object",
+	"required": [
+		"core_identification",
+		"technical_profile",
+		"behavioral_analysis",
+		"strategic_context"
+	],
+	"properties": {
+		"core_identification": {
+			"type": "object",
+			"required": [
+				"unique_id",
+				"first_observed",
+				"confidence_level"
+			],
+			"properties": {
+				"unique_id": {
+					"type": "string",
+					"pattern": "^TA[0-9]{2}[A-Z]{3}-[A-Z]{3}[0-9]{3}$",
+					"description": "Unique identifier following format TA{YY}{XXX}-{CAT}{NUM}"
+				},
+				"aliases": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"description": "Known alternative names for the threat actor"
+				},
+				"first_observed": {
+					"type": "string",
+					"format": "date",
+					"description": "Date when actor was first observed (YYYY-MM-DD)"
+				},
+				"last_active": {
+					"type": "string",
+					"format": "date",
+					"description": "Most recent confirmed activity date"
+				},
+				"confidence_level": {
+					"type": "integer",
+					"minimum": 1,
+					"maximum": 5,
+					"description": "Confidence in attribution (1-5 scale)"
+				}
+			}
+		},
+		"technical_profile": {
+			"type": "object",
+			"required": [
+				"capability_level",
+				"tools_malware"
+			],
+			"properties": {
+				"capability_level": {
+					"type": "string",
+					"enum": [
+						"Basic",
+						"Intermediate",
+						"Advanced"
+					],
+					"description": "Overall technical capability assessment"
+				},
+				"tools_malware": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"required": [
+							"name",
+							"type"
+						],
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"type": {
+								"type": "string",
+								"enum": [
+									"RAT",
+									"Backdoor",
+									"Ransomware",
+									"Wiper",
+									"Loader",
+									"Other"
+								]
+							},
+							"first_seen": {
+								"type": "string",
+								"format": "date"
+							},
+							"last_seen": {
+								"type": "string",
+								"format": "date"
+							},
+							"variant": {
+								"type": "string"
+							},
+							"hash_values": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"infrastructure": {
+					"type": "object",
+					"properties": {
+						"c2_servers": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"hosting_preferences": {
+							"type": "string"
+						},
+						"infrastructure_type": {
+							"type": "string",
+							"enum": [
+								"Static",
+								"Dynamic",
+								"Hybrid"
+							]
+						},
+						"known_ip_ranges": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"c2_characteristics": {
+					"type": "object",
+					"properties": {
+						"protocols": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"enum": [
+									"HTTP",
+									"HTTPS",
+									"DNS",
+									"TCP",
+									"UDP",
+									"ICMP",
+									"Other"
+								]
+							}
+						},
+						"encryption": {
+							"type": "string"
+						},
+						"persistence_method": {
+							"type": "string"
+						},
+						"communication_patterns": {
+							"type": "object",
+							"properties": {
+								"frequency": {
+									"type": "string"
+								},
+								"beaconing_interval": {
+									"type": "string"
+								},
+								"data_exfiltration_method": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"exploitation_methods": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"behavioral_analysis": {
+			"type": "object",
+			"required": [
+				"target_sectors",
+				"attack_patterns"
+			],
+			"properties": {
+				"target_sectors": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"enum": [
+							"Technology",
+							"Defense",
+							"Manufacturing",
+							"Financial",
+							"Healthcare",
+							"Government",
+							"Energy",
+							"Telecommunications",
+							"Other"
+						]
+					}
+				},
+				"geographic_focus": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"region": {
+								"type": "string"
+							},
+							"countries": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"attack_patterns": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"required": [
+							"technique_id",
+							"technique_name"
+						],
+						"properties": {
+							"technique_id": {
+								"type": "string",
+								"pattern": "^T[0-9]{4}(.[0-9]{3})?$"
+							},
+							"technique_name": {
+								"type": "string"
+							},
+							"sub_techniques": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"mitre_mappings": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"enum": [
+							"Initial Access",
+							"Execution",
+							"Persistence",
+							"Privilege Escalation",
+							"Defense Evasion",
+							"Credential Access",
+							"Discovery",
+							"Lateral Movement",
+							"Collection",
+							"Command and Control",
+							"Exfiltration",
+							"Impact"
+						]
+					}
+				},
+				"time_patterns": {
+					"type": "object",
+					"properties": {
+						"active_hours": {
+							"type": "string"
+						},
+						"peak_activity": {
+							"type": "string"
+						},
+						"timezone_preference": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		},
+		"strategic_context": {
+			"type": "object",
+			"required": [
+				"motivation",
+				"attribution_confidence"
+			],
+			"properties": {
+				"motivation": {
+					"type": "string",
+					"enum": [
+						"Cyber Espionage",
+						"Financial Gain",
+						"Hacktivism",
+						"Information Operations",
+						"Destructive Attack",
+						"Military Advantage",
+						"Unknown"
+					]
+				},
+				"goals": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"relationships": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"required": [
+							"group",
+							"relationship_type",
+							"confidence"
+						],
+						"properties": {
+							"group": {
+								"type": "string",
+								"pattern": "^TA[0-9]{2}[A-Z]{3}-[A-Z]{3}[0-9]{3}$"
+							},
+							"relationship_type": {
+								"type": "string",
+								"enum": [
+									"Shared Infrastructure",
+									"Shared Tools",
+									"Shared TTPs",
+									"Parent Organization",
+									"Subsidiary",
+									"Affiliated",
+									"Competing",
+									"Other"
+								]
+							},
+							"confidence": {
+								"type": "integer",
+								"minimum": 1,
+								"maximum": 5
+							},
+							"details": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"attribution_confidence": {
+					"type": "integer",
+					"minimum": 1,
+					"maximum": 5
+				},
+				"state_sponsored": {
+					"type": "object",
+					"properties": {
+						"assessment": {
+							"type": "boolean"
+						},
+						"suspected_state": {
+							"type": "string"
+						},
+						"confidence": {
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 5
+						}
+					}
+				},
+				"resources": {
+					"type": "object",
+					"properties": {
+						"financial_resources": {
+							"type": "string",
+							"enum": [
+								"Limited",
+								"Moderate",
+								"Substantial",
+								"Unknown"
+							]
+						},
+						"personnel_size": {
+							"type": "string",
+							"enum": [
+								"Individual",
+								"Small Team",
+								"Large Team",
+								"Organization",
+								"Unknown"
+							]
+						},
+						"technical_resources": {
+							"type": "string",
+							"enum": [
+								"Limited",
+								"Moderate",
+								"Advanced",
+								"Unknown"
+							]
+						}
+					}
+				}
+			}
+		},
+		"metadata": {
+			"type": "object",
+			"properties": {
+				"created": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"modified": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"version": {
+					"type": "string"
+				},
+				"created_by": {
+					"type": "string"
+				},
+				"modified_by": {
+					"type": "string"
+				},
+				"references": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"url": {
+								"type": "string",
+								"format": "uri"
+							},
+							"description": {
+								"type": "string"
+							},
+							"source": {
+								"type": "string"
+							},
+							"date_added": {
+								"type": "string",
+								"format": "date"
+							},
+							"confidence": {
+								"type": "integer",
+								"minimum": 1,
+								"maximum": 5
+							}
+						},
+						"required": [
+							"url",
+							"source"
+						]
+					}
+				},
+				"tags": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"tlp_level": {
+					"type": "string",
+					"enum": [
+						"WHITE",
+						"GREEN",
+						"AMBER",
+						"RED"
+					]
+				},
+				"confidence_scoring": {
+					"type": "object",
+					"properties": {
+						"scoring_method": {
+							"type": "string"
+						},
+						"overall_score": {
+							"type": "number",
+							"minimum": 0,
+							"maximum": 100
+						},
+						"scoring_details": {
+							"type": "object",
+							"properties": {
+								"technical_evidence": {
+									"type": "number"
+								},
+								"behavioral_patterns": {
+									"type": "number"
+								},
+								"contextual_information": {
+									"type": "number"
+								}
+							}
+						}
+					}
+				}
+			},
+			"required": [
+				"created",
+				"modified",
+				"version"
+			]
+		}
+	},
+	"additionalProperties": false,
+	"definitions": {
+		"confidence_level": {
+			"type": "integer",
+			"minimum": 1,
+			"maximum": 5,
+			"description": "1: Low, 2: Low-Medium, 3: Medium, 4: Medium-High, 5: High"
+		},
+		"date_format": {
+			"type": "string",
+			"pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+		}
+	}
+}

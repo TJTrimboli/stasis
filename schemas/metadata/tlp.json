@@ -1,0 +1,149 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/metadata/tlp.json",
+    "title": "UTAMF TLP",
+    "description": "Traffic Light Protocol (TLP) metadata for UTAMF objects",
+    "type": "object",
+    "properties": {
+        "tlp_level": {
+            "type": "string",
+            "enum": ["WHITE", "GREEN", "AMBER", "RED"],
+            "description": "TLP classification level"
+        },
+        "sharing_restrictions": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "restriction_type": {
+                        "type": "string",
+                        "enum": [
+                            "Geographic",
+                            "Sector",
+                            "Organization",
+                            "Time-based",
+                            "Other"
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "affected_parties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "expiration": {
+                        "$ref": "../common/timestamp.json"
+                    }
+                },
+                "required": ["restriction_type", "description"]
+            }
+        },
+        "handling_requirements": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "Special handling instructions"
+        },
+        "attribution_guidance": {
+            "type": "object",
+            "properties": {
+                "can_attribute": {
+                    "type": "boolean"
+                },
+                "attribution_rules": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "required_coordination": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": ["can_attribute"]
+        },
+        "distribution_list": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "organization": {
+                        "type": "string"
+                    },
+                    "sector": {
+                        "type": "string"
+                    },
+                    "country": {
+                        "type": "string",
+                        "pattern": "^[A-Z]{3}$"
+                    },
+                    "point_of_contact": {
+                        "type": "string"
+                    },
+                    "date_shared": {
+                        "$ref": "../common/timestamp.json"
+                    }
+                },
+                "required": ["organization"]
+            }
+        },
+        "redistribution_guidance": {
+            "type": "object",
+            "properties": {
+                "allowed": {
+                    "type": "boolean"
+                },
+                "conditions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "notification_requirements": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": ["allowed"]
+        },
+        "review_requirements": {
+            "type": "object",
+            "properties": {
+                "review_frequency": {
+                    "type": "string",
+                    "enum": [
+                        "Daily",
+                        "Weekly",
+                        "Monthly",
+                        "Quarterly",
+                        "Annually",
+                        "As Needed"
+                    ]
+                },
+                "last_review": {
+                    "$ref": "../common/timestamp.json"
+                },
+                "next_review": {
+                    "$ref": "../common/timestamp.json"
+                },
+                "reviewers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "required": ["tlp_level"],
+    "additionalProperties": false
+}

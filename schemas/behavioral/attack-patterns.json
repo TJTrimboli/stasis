@@ -1,0 +1,195 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/behavioral/attack-patterns.json",
+    "title": "UTAMF Attack Patterns",
+    "description": "Observed attack patterns and techniques",
+    "type": "object",
+    "properties": {
+        "techniques": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "technique_id": {
+                        "type": "string",
+                        "pattern": "^T[0-9]{4}(\.[0-9]{3})?$",
+                        "description": "MITRE ATT&CK technique ID"
+                    },
+                    "technique_name": {
+                        "type": "string"
+                    },
+                    "frequency": {
+                        "type": "string",
+                        "enum": ["Rare", "Occasional", "Frequent", "Constant"]
+                    },
+                    "first_observed": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "last_observed": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "implementation": {
+                        "type": "string",
+                        "description": "Specific implementation details"
+                    },
+                    "effectiveness": {
+                        "type": "string",
+                        "enum": ["Low", "Medium", "High"]
+                    },
+                    "detection_difficulty": {
+                        "type": "string",
+                        "enum": ["Easy", "Moderate", "Difficult"]
+                    }
+                },
+                "required": ["technique_id", "technique_name"]
+            }
+        },
+        "kill_chain_phases": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "phase_name": {
+                        "type": "string",
+                        "enum": [
+                            "Reconnaissance",
+                            "Weaponization",
+                            "Delivery",
+                            "Exploitation",
+                            "Installation",
+                            "Command and Control",
+                            "Actions on Objectives"
+                        ]
+                    },
+                    "techniques_used": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^T[0-9]{4}(\.[0-9]{3})?$"
+                        }
+                    },
+                    "sophistication_level": {
+                        "type": "string",
+                        "enum": ["Low", "Medium", "High"]
+                    },
+                    "typical_duration": {
+                        "type": "string",
+                        "description": "Typical time spent in this phase"
+                    }
+                },
+                "required": ["phase_name", "techniques_used"]
+            }
+        },
+        "common_sequences": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "sequence_name": {
+                        "type": "string"
+                    },
+                    "steps": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "order": {
+                                    "type": "integer",
+                                    "minimum": 1
+                                },
+                                "technique_id": {
+                                    "type": "string",
+                                    "pattern": "^T[0-9]{4}(\.[0-9]{3})?$"
+                                },
+                                "duration": {
+                                    "type": "string"
+                                },
+                                "success_rate": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 100
+                                }
+                            },
+                            "required": ["order", "technique_id"]
+                        }
+                    },
+                    "frequency": {
+                        "type": "string",
+                        "enum": ["Rare", "Occasional", "Frequent"]
+                    }
+                },
+                "required": ["sequence_name", "steps"]
+            }
+        },
+        "tool_usage": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "tool_name": {
+                        "type": "string"
+                    },
+                    "associated_techniques": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^T[0-9]{4}(\.[0-9]{3})?$"
+                        }
+                    },
+                    "customization_level": {
+                        "type": "string",
+                        "enum": ["None", "Minor", "Significant", "Complete"]
+                    },
+                    "detection_evasion": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": ["tool_name", "associated_techniques"]
+            }
+        },
+        "pattern_evolution": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "date": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "change_type": {
+                        "type": "string",
+                        "enum": [
+                            "New Technique",
+                            "Modified Technique",
+                            "Abandoned Technique",
+                            "Tool Change",
+                            "Infrastructure Change"
+                        ]
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Details of the pattern evolution"
+                    },
+                    "trigger": {
+                        "type": "string",
+                        "description": "What prompted the change"
+                    },
+                    "impact": {
+                        "type": "string",
+                        "enum": ["Minor", "Moderate", "Significant"]
+                    },
+                    "detection_implications": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": ["date", "change_type", "description"]
+            }
+        }
+    },
+    "required": ["techniques", "kill_chain_phases"]
+}

@@ -1,0 +1,169 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/behavioral/targeting.json",
+    "title": "UTAMF Targeting Behavior",
+    "description": "Target selection and targeting behavior patterns",
+    "type": "object",
+    "properties": {
+        "target_sectors": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "sector": {
+                        "type": "string",
+                        "enum": [
+                            "Technology",
+                            "Defense",
+                            "Manufacturing",
+                            "Financial",
+                            "Healthcare",
+                            "Government",
+                            "Energy",
+                            "Telecommunications",
+                            "Education",
+                            "Transportation",
+                            "Critical Infrastructure",
+                            "Other"
+                        ]
+                    },
+                    "subsectors": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "prevalence": {
+                        "type": "string",
+                        "enum": ["Primary", "Secondary", "Occasional"]
+                    },
+                    "first_targeted": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "last_targeted": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "targeting_goal": {
+                        "type": "string",
+                        "description": "Objective for targeting this sector"
+                    },
+                    "confidence": {
+                        "$ref": "../common/confidence.json"
+                    }
+                },
+                "required": ["sector", "prevalence"]
+            }
+        },
+        "victim_attributes": {
+            "type": "object",
+            "properties": {
+                "organization_size": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Small",
+                            "Medium",
+                            "Large",
+                            "Enterprise"
+                        ]
+                    }
+                },
+                "revenue_focus": {
+                    "type": "boolean",
+                    "description": "Whether revenue is a targeting factor"
+                },
+                "technology_focus": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "description": "Specific technologies targeted"
+                    }
+                },
+                "required_access": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Internet-facing",
+                            "Internal Network",
+                            "Specific System",
+                            "Physical Access"
+                        ]
+                    }
+                }
+            }
+        },
+        "targeting_patterns": {
+            "type": "object",
+            "properties": {
+                "selection_criteria": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "description": "Criteria used for target selection"
+                    }
+                },
+                "prioritization": {
+                    "type": "string",
+                    "description": "How targets are prioritized"
+                },
+                "opportunity_driven": {
+                    "type": "boolean",
+                    "description": "Whether targeting is opportunistic"
+                },
+                "targeting_sophistication": {
+                    "type": "string",
+                    "enum": ["Low", "Medium", "High"]
+                }
+            }
+        },
+        "target_data_types": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "data_type": {
+                        "type": "string",
+                        "enum": [
+                            "PII",
+                            "Financial",
+                            "Intellectual Property",
+                            "Authentication Credentials",
+                            "Email Communications",
+                            "Strategic Plans",
+                            "Source Code",
+                            "Customer Data",
+                            "Research Data",
+                            "Military Information",
+                            "Government Documents",
+                            "Other"
+                        ]
+                    },
+                    "priority": {
+                        "type": "string",
+                        "enum": ["High", "Medium", "Low"]
+                    },
+                    "observed_exfiltration": {
+                        "type": "boolean"
+                    },
+                    "typical_volume": {
+                        "type": "string",
+                        "description": "Typical volume of data targeted"
+                    }
+                },
+                "required": ["data_type", "priority"]
+            }
+        },
+        "target_geography": {
+            "$ref": "geographic.json"
+        },
+        "attack_patterns": {
+            "$ref": "attack-patterns.json"
+        },
+        "temporal_patterns": {
+            "$ref": "time-patterns.json"
+        }
+    },
+    "required": ["target_sectors", "targeting_patterns"]
+}

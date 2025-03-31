@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/common/dictionary.json",
+    "title": "UTAMF Dictionary",
+    "description": "Common dictionary type for key-value pairs",
+    "type": "object",
+    "patternProperties": {
+        "^[a-zA-Z0-9_-]+$": {
+            "anyOf": [
+                {"type": "string"},
+                {"type": "number"},
+                {"type": "boolean"},
+                {"type": "array"},
+                {"type": "object"}
+            ]
+        }
+    },
+    "additionalProperties": false
+}

@@ -1,0 +1,71 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/metadata/timestamps.json",
+    "title": "UTAMF Timestamps",
+    "description": "Timestamp metadata for UTAMF objects",
+    "type": "object",
+    "properties": {
+        "created": {
+            "$ref": "../common/timestamp.json"
+        },
+        "modified": {
+            "$ref": "../common/timestamp.json"
+        },
+        "first_seen": {
+            "$ref": "../common/timestamp.json"
+        },
+        "last_seen": {
+            "$ref": "../common/timestamp.json"
+        },
+        "valid_from": {
+            "$ref": "../common/timestamp.json"
+        },
+        "valid_until": {
+            "$ref": "../common/timestamp.json"
+        },
+        "last_updated": {
+            "$ref": "../common/timestamp.json"
+        },
+        "update_frequency": {
+            "type": "string",
+            "enum": [
+                "As Needed",
+                "Daily",
+                "Weekly",
+                "Monthly",
+                "Quarterly",
+                "Annually"
+            ]
+        },
+        "revision_history": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "timestamp": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "modified_by": {
+                        "type": "string"
+                    },
+                    "change_type": {
+                        "type": "string",
+                        "enum": [
+                            "Creation",
+                            "Update",
+                            "Deletion",
+                            "Merge",
+                            "Split"
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "required": ["timestamp", "change_type"]
+            }
+        }
+    },
+    "required": ["created", "modified"],
+    "additionalProperties": false
+}

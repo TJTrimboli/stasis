@@ -1,0 +1,367 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/strategic/resources.json",
+    "title": "UTAMF Resources",
+    "description": "Resources and capabilities available to the threat actor",
+    "type": "object",
+    "properties": {
+        "personnel": {
+            "type": "object",
+            "properties": {
+                "size_estimate": {
+                    "type": "object",
+                    "properties": {
+                        "minimum": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "maximum": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "confidence": {
+                            "$ref": "../common/confidence.json"
+                        }
+                    },
+                    "required": ["minimum", "maximum"]
+                },
+                "skill_levels": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "category": {
+                                "type": "string",
+                                "enum": [
+                                    "Development",
+                                    "Exploitation",
+                                    "Infrastructure",
+                                    "Operations",
+                                    "Research",
+                                    "Management"
+                                ]
+                            },
+                            "level": {
+                                "type": "string",
+                                "enum": ["Basic", "Intermediate", "Advanced", "Expert"]
+                            },
+                            "percentage": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                            }
+                        },
+                        "required": ["category", "level"]
+                    }
+                },
+                "specializations": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "area": {
+                                "type": "string"
+                            },
+                            "capability_level": {
+                                "type": "string",
+                                "enum": ["Low", "Medium", "High"]
+                            },
+                            "personnel_count": {
+                                "type": "integer",
+                                "minimum": 0
+                            }
+                        },
+                        "required": ["area", "capability_level"]
+                    }
+                },
+                "training": {
+                    "type": "object",
+                    "properties": {
+                        "programs": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Internal",
+                                            "External",
+                                            "Academic",
+                                            "Military",
+                                            "Other"
+                                        ]
+                                    },
+                                    "focus_areas": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "duration": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["type", "focus_areas"]
+                            }
+                        },
+                        "effectiveness": {
+                            "type": "string",
+                            "enum": ["Low", "Medium", "High"]
+                        }
+                    }
+                }
+            },
+            "required": ["size_estimate"]
+        },
+        "financial": {
+            "type": "object",
+            "properties": {
+                "funding_sources": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+								"enum": [
+                                    "State Funding",
+                                    "Criminal Activity",
+                                    "Legitimate Business",
+                                    "Cryptocurrency",
+                                    "Private Investment",
+                                    "Other"
+                                ]
+                            },
+                            "estimated_percentage": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                            },
+                            "confidence": {
+                                "$ref": "../common/confidence.json"
+                            },
+                            "notes": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["type"]
+                    }
+                },
+                "resource_level": {
+                    "type": "string",
+                    "enum": ["Limited", "Moderate", "Substantial", "Extensive"]
+                },
+                "annual_budget_estimate": {
+                    "type": "object",
+                    "properties": {
+                        "minimum": {
+                            "type": "number"
+                        },
+                        "maximum": {
+                            "type": "number"
+                        },
+                        "currency": {
+                            "type": "string",
+                            "pattern": "^[A-Z]{3}$"
+                        },
+                        "confidence": {
+                            "$ref": "../common/confidence.json"
+                        }
+                    }
+                },
+                "cryptocurrency_wallets": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "currency": {
+                                "type": "string"
+                            },
+                            "address": {
+                                "type": "string"
+                            },
+                            "first_seen": {
+                                "$ref": "../common/timestamp.json"
+                            },
+                            "last_seen": {
+                                "$ref": "../common/timestamp.json"
+                            }
+                        },
+                        "required": ["currency", "address"]
+                    }
+                }
+            },
+            "required": ["resource_level"]
+        },
+        "infrastructure": {
+            "type": "object",
+            "properties": {
+                "hosting_capabilities": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "Owned Hardware",
+                                    "Leased Infrastructure",
+                                    "Cloud Services",
+                                    "Compromised Assets",
+                                    "Other"
+                                ]
+                            },
+                            "scale": {
+                                "type": "string",
+                                "enum": ["Small", "Medium", "Large"]
+                            },
+                            "geographic_distribution": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "pattern": "^[A-Z]{3}$"
+                                }
+                            }
+                        },
+                        "required": ["type", "scale"]
+                    }
+                },
+                "network_infrastructure": {
+                    "type": "object",
+                    "properties": {
+                        "connectivity": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Commercial ISP",
+                                    "Dedicated Links",
+                                    "Satellite",
+                                    "Mobile",
+                                    "Other"
+                                ]
+                            }
+                        },
+                        "redundancy_level": {
+                            "type": "string",
+                            "enum": ["None", "Basic", "Advanced"]
+                        },
+                        "anonymization_capabilities": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "VPN",
+                                    "Proxy",
+                                    "Tor",
+                                    "Custom Solution",
+                                    "Bulletproof Hosting",
+                                    "Other"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "development_environment": {
+                    "type": "object",
+                    "properties": {
+                        "capabilities": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Malware Development",
+                                    "Exploit Development",
+                                    "Tool Modification",
+                                    "Testing Environment",
+                                    "Research Lab"
+                                ]
+                            }
+                        },
+                        "sophistication": {
+                            "type": "string",
+                            "enum": ["Basic", "Intermediate", "Advanced"]
+                        },
+                        "security_measures": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "technical_capabilities": {
+            "type": "object",
+            "properties": {
+                "malware_development": {
+                    "type": "object",
+                    "properties": {
+                        "capability_level": {
+                            "type": "string",
+                            "enum": ["None", "Basic", "Intermediate", "Advanced"]
+                        },
+                        "specializations": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "known_languages": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "exploit_development": {
+                    "type": "object",
+                    "properties": {
+                        "capability_level": {
+                            "type": "string",
+                            "enum": ["None", "Basic", "Intermediate", "Advanced"]
+                        },
+                        "target_platforms": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "zero_day_capacity": {
+                            "type": "string",
+                            "enum": ["None", "Limited", "Moderate", "Significant"]
+                        }
+                    }
+                }
+            }
+        },
+        "access_to_exploits": {
+            "type": "object",
+            "properties": {
+                "acquisition_methods": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Internal Development",
+                            "Purchase",
+                            "Partner Sharing",
+                            "Open Source",
+                            "Other"
+                        ]
+                    }
+                },
+                "exploit_brokers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "required": ["personnel", "financial"]
+}

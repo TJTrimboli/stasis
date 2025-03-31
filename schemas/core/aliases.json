@@ -1,0 +1,55 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://utamf.org/schemas/core/aliases.json",
+    "title": "UTAMF Aliases",
+    "description": "Threat actor aliases definition",
+    "type": "object",
+    "properties": {
+        "names": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Alternative name"
+                    },
+                    "source": {
+                        "type": "string",
+                        "description": "Source of the alias"
+                    },
+                    "first_seen": {
+                        "$ref": "../common/timestamp.json"
+                    },
+                    "confidence": {
+                        "$ref": "../common/confidence.json"
+                    }
+                },
+                "required": ["name"]
+            }
+        },
+        "tracking_ids": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "External tracking identifier"
+                    },
+                    "source": {
+                        "type": "string",
+                        "description": "Organization assigning the ID"
+                    },
+                    "id_type": {
+                        "type": "string",
+                        "description": "Type of identifier"
+                    }
+                },
+                "required": ["id", "source"]
+            }
+        }
+    },
+    "additionalProperties": false,
+    "minProperties": 1
+}
